@@ -1,15 +1,3 @@
-workspace "sita"
-    architecture "x64"
-
-    configurations
-    {
-        "debug",
-        "release"
-    }
-
-tdir = "bin/%{cfg.system}-%{cfg.buildcfg}-%{cfg.architecture}/%{prj.name}"
-odir = "bin-int/%{cfg.system}-%{cfg.buildcfg}-%{cfg.architecture}/%{prj.name}"
-
 project "sita"
     location "sita"
     kind "StaticLib"
