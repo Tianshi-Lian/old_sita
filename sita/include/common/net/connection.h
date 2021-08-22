@@ -5,11 +5,11 @@
 #include "common/net/common.h"
 #include "common/net/message.h"
 
-namespace sakura::server::net {
+namespace sita::server::net {
 	class Server;
 }
 
-namespace sakura::common::net {
+namespace sita::common::net {
 
 	class Connection : public std::enable_shared_from_this<Connection> {
 	public:

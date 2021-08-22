@@ -6,7 +6,7 @@
 #include <SDL2_fc/SDL_FontCache.h>
 
 
-using namespace sakura::client::graphics;
+using namespace sita::client::graphics;
 
 Font::Font() :
 	m_internal(nullptr),

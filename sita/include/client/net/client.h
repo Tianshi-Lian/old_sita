@@ -8,7 +8,7 @@
 #include "common/net/connection.h"
 #include "common/net/message.h"
 
-namespace sakura::client::net {
+namespace sita::client::net {
 
 	class Client {
 	public:

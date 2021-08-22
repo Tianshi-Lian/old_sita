@@ -4,7 +4,7 @@
 #include "common/net/common.h"
 #include "server/net/server.h"
 
-using namespace sakura::common::net;
+using namespace sita::common::net;
 
 Connection::Connection(Owner parent, asio::io_context& asioContext, asio::ip::tcp::socket socket, core::Threadsafe_Queue<Owned_Message>& queueIn) :
 	m_context(asioContext), m_socket(std::move(socket)), m_messagesIn(queueIn), m_owner(parent) {

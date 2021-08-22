@@ -7,7 +7,7 @@
 #include <vector>
 #include <unordered_map>
 
-namespace sakura::common {
+namespace sita::common {
 
 	enum class Language { EN, DE };
 

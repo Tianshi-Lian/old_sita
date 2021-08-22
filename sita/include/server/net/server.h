@@ -3,7 +3,7 @@
 #include "common/common.h"
 #include "common/net/connection.h"
 
-namespace sakura::server::net {
+namespace sita::server::net {
 
 	class Server {
 	public:

@@ -6,7 +6,7 @@
 
 struct FC_Font;
 
-namespace sakura::client::graphics {
+namespace sita::client::graphics {
 
 	class Font {
 	public:

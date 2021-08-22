@@ -3,7 +3,7 @@
 #include "common/debug/logger.h"
 #include "common/net/connection.h"
 
-using namespace sakura;
+using namespace sita;
 using namespace common::core;
 using namespace client::net;
 
