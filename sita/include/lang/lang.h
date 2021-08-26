@@ -1,13 +1,13 @@
 #pragma once
 
-#include "common/common.h"
-#include "common/debug/instrumentor.h"
+#include "core/types.h"
+#include "debug/instrumentor.h"
 
 #include <string>
 #include <vector>
 #include <unordered_map>
 
-namespace sita::common {
+namespace sita::lang {
 
 	enum class Language { EN, DE };
 

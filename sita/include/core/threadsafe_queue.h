@@ -1,8 +1,8 @@
 #pragma once
 
-#include "common/common.h"
+#include "types.h"
 
-namespace sita::common::core {
+namespace sita::core {
 
 	template<typename T>
 	class Threadsafe_Queue {

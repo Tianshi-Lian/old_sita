@@ -1,8 +1,8 @@
 #pragma once
 
-#include "common/common.h"
+#include "core/types.h"
 
-namespace sita::common::net {
+namespace sita::network {
 
 	struct Message_Header {
 		u32 id{};

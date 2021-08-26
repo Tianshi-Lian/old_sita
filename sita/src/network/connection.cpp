@@ -1,10 +1,10 @@
-#include "common/net/connection.h"
+#include "network/connection.h"
 
-#include "common/debug/logger.h"
-#include "common/net/common.h"
-#include "server/net/server.h"
+#include "debug/logger.h"
+#include "network/net_common.h"
+#include "network/server/server.h"
 
-using namespace sita::common::net;
+using namespace sita::network;
 
 Connection::Connection(Owner parent, asio::io_context& asioContext, asio::ip::tcp::socket socket, core::Threadsafe_Queue<Owned_Message>& queueIn) :
 	m_context(asioContext), m_socket(std::move(socket)), m_messagesIn(queueIn), m_owner(parent) {
@@ -16,7 +16,7 @@ Connection::Connection(Owner parent, asio::io_context& asioContext, asio::ip::tc
 	}
 }
 
-void Connection::connectToClient(server::net::Server* server, uint32_t uid) {
+void Connection::connectToClient(server::Server* server, uint32_t uid) {
 	if (m_owner == Owner::SERVER) {
 		if (m_socket.is_open()) {
 			m_id = uid;
@@ -100,7 +100,7 @@ void Connection::writeValidation() {
 	);
 }
 
-void Connection::readValidation(server::net::Server* server) {
+void Connection::readValidation(server::Server* server) {
 	asio::async_read(m_socket, asio::buffer(&m_handshakeIn, sizeof(u64)),
 		[this, server](std::error_code errorCode, size_t length) {
 			if (!errorCode) {

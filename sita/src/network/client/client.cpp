@@ -1,11 +1,10 @@
-#include "client/net/client.h"
+#include "network/client/client.h"
 
-#include "common/debug/logger.h"
-#include "common/net/connection.h"
+#include "debug/logger.h"
+#include "network/connection.h"
 
 using namespace sita;
-using namespace common::core;
-using namespace client::net;
+using namespace network::client;
 
 Client::~Client() {
 	disconnect();
@@ -16,7 +15,7 @@ bool Client::connect(const std::string& host, const uint16_t port) {
 		asio::ip::tcp::resolver resolver(m_context);
 		asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
 
-		m_connection = std::make_unique<common::net::Connection>(common::net::Connection::Owner::CLIENT, m_context, asio::ip::tcp::socket(m_context), m_messagesIn);
+		m_connection = std::make_unique<Connection>(Connection::Owner::CLIENT, m_context, asio::ip::tcp::socket(m_context), m_messagesIn);
 
 		m_connection->connectToServer(endpoints);
 
@@ -41,7 +40,7 @@ void Client::disconnect() {
 	m_connection.reset();
 }
 
-void Client::send(const common::net::Message& msg) const {
+void Client::send(const Message& msg) const {
 	if (isConnected()) {
 		m_connection->send(msg);
 	}
@@ -66,6 +65,6 @@ u32 Client::getId() const {
 	return 0;
 }
 
-Threadsafe_Queue<common::net::Owned_Message>& Client::incoming() {
+core::Threadsafe_Queue<network::Owned_Message>& Client::incoming() {
 	return m_messagesIn;
 }

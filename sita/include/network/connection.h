@@ -1,15 +1,15 @@
 #pragma once
 
-#include "common/core/threadsafe_queue.h"
+#include "core/threadsafe_queue.h"
 
-#include "common/net/common.h"
-#include "common/net/message.h"
+#include "network/net_common.h"
+#include "network/message.h"
 
-namespace sita::server::net {
+namespace sita::network::server {
 	class Server;
 }
 
-namespace sita::common::net {
+namespace sita::network {
 
 	class Connection : public std::enable_shared_from_this<Connection> {
 	public:
@@ -24,7 +24,7 @@ namespace sita::common::net {
 		virtual ~Connection() = default;
 
 
-		void connectToClient(server::net::Server* server, uint32_t uid = 0);
+		void connectToClient(server::Server* server, uint32_t uid = 0);
 		void connectToServer(const asio::ip::tcp::resolver::results_type& endpoints);
 
 		void disconnect();
@@ -42,7 +42,7 @@ namespace sita::common::net {
 		void writeHeader();
 		void writeBody();
 
-		void readValidation(server::net::Server* server = nullptr);
+		void readValidation(server::Server* server = nullptr);
 		void readHeader();
 		void readBody();
 

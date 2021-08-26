@@ -1,12 +1,12 @@
 #pragma once
 
-#include "common/common.h"
+#include "core/types.h"
 
 #include <string>
 
 struct FC_Font;
 
-namespace sita::client::graphics {
+namespace sita::graphics {
 
 	class Font {
 	public:

@@ -1,12 +1,12 @@
-#include "client/graphics/font.h"
+#include "graphics/font.h"
 
-#include "common/debug/logger.h"
-#include "common/debug/instrumentor.h"
+#include "debug/logger.h"
+#include "debug/instrumentor.h"
 
 #include <SDL2_fc/SDL_FontCache.h>
 
 
-using namespace sita::client::graphics;
+using namespace sita::graphics;
 
 Font::Font() :
 	m_internal(nullptr),

@@ -1,8 +1,8 @@
-#include "server/net/server.h"
+#include "network/server/server.h"
 
-#include "common/debug/logger.h"
+#include "debug/logger.h"
 
-using namespace sita::server::net;
+using namespace sita::network::server;
 
 
 Server::Server(uint16_t port) :
@@ -42,8 +42,8 @@ void Server::waitForClientConnection() {
 			if (!errorCode) {
 				Log::info("[Server] New connection: {}", socket.remote_endpoint());
 
-				std::shared_ptr<common::net::Connection> newConnection = std::make_shared<common::net::Connection>(
-					common::net::Connection::Owner::SERVER, m_context, std::move(socket), m_MessagesIn);
+				std::shared_ptr<Connection> newConnection = std::make_shared<Connection>(
+					Connection::Owner::SERVER, m_context, std::move(socket), m_MessagesIn);
 
 				if (onClientConnect(newConnection)) {
 					m_connections.push_back(std::move(newConnection));
@@ -65,7 +65,7 @@ void Server::waitForClientConnection() {
 	);
 }
 
-void Server::messageClient(std::shared_ptr<common::net::Connection> client, const common::net::Message& message) {
+void Server::messageClient(std::shared_ptr<Connection> client, const Message& message) {
 	if (client && client->isConnected()) {
 		client->send(message);
 	}
@@ -78,7 +78,7 @@ void Server::messageClient(std::shared_ptr<common::net::Connection> client, cons
 	}
 }
 
-void Server::messageAllClients(const common::net::Message& message, const std::shared_ptr<common::net::Connection>& ignoredClient) {
+void Server::messageAllClients(const Message& message, const std::shared_ptr<Connection>& ignoredClient) {
 	bool invalidClient = false;
 
 	for (auto& client : m_connections) {
@@ -114,16 +114,16 @@ void Server::processMessages(u64 maxMessages, bool wait) {
 	}
 }
 
-void Server::onClientValidated(std::shared_ptr<common::net::Connection> client) {
+void Server::onClientValidated(std::shared_ptr<Connection> client) {
 }
 
-bool Server::onClientConnect(std::shared_ptr<common::net::Connection> client) {
+bool Server::onClientConnect(std::shared_ptr<Connection> client) {
 	return false;
 }
 
-void Server::onClientDisconnect(std::shared_ptr<common::net::Connection> client) {
+void Server::onClientDisconnect(std::shared_ptr<Connection> client) {
 }
 
-void Server::onMessage(std::shared_ptr<common::net::Connection> client, common::net::Message& message) {
+void Server::onMessage(std::shared_ptr<Connection> client, Message& message) {
 }
 
