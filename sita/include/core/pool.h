@@ -4,7 +4,7 @@
 
 #include "types.h"
 
-namespace core {
+namespace sita::core {
 
 	class IPool {
 	public:

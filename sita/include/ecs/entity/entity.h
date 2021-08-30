@@ -8,11 +8,14 @@ namespace sita::ecs::entity {
 	class Entity {
 	public:
 		u64 id;
-		
+
+		Entity();
 		Entity(u64 id);
 		Entity(const Entity& entity) = default;
 
 		void bind(Entity_Manager* entityManager);
+
+		void destroy() const;
 
 		template <typename T, typename ...Args>
 		void addComponent(Args&& ...args) const;
@@ -21,7 +24,7 @@ namespace sita::ecs::entity {
 		void removeComponent() const;
 
 		template <typename T>
-		bool hasComponent() const;
+		[[nodiscard]] bool hasComponent() const;
 
 		template <typename T>
 		T& getComponent() const;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <deque>
 #include <memory>
 #include <set>
 #include <vector>
@@ -8,7 +9,6 @@
 #include "ecs/component/component.h"
 
 #include "core/pool.h"
-#include "debug/logger.h"
 
 namespace sita::ecs::system {
 	class System_Manager;
@@ -24,29 +24,29 @@ namespace sita::ecs::entity {
 
 		/////// Entities
 		Entity createEntity();
-		void destroyEntity(u64 entityId);
+		void destroyEntity(Entity entity);
 
 
 		/////// Components
 		template <typename T, typename ...Args>
-		void addComponent(u64 entityId, Args&& ...args);
+		void addComponent(Entity entity, Args&& ...args);
 
 		template <typename T>
-		void removeComponent(u64 entityId);
+		void removeComponent(Entity entityId);
 
 		template <typename T>
 		[[nodiscard]] bool hasComponent(u64 entityId) const;
 
 		template <typename T>
-		T& getComponent(u64 entityId);
+		T& getComponent(Entity entityId);
 
 	private:
-		void addEntityToSystems(u64 entityId);
+		u64 m_numEntities;
 
-		u64 m_numEntities = 0;
+		std::deque<u64> m_freeIds;
 
-		std::set<u64> m_entitiesToAdd;
-		std::set<u64> m_entitiesToDestroy;
+		std::set<Entity> m_entitiesToAdd;
+		std::set<Entity> m_entitiesToDestroy;
 
 		std::shared_ptr<system::System_Manager> m_systemManager;
 
@@ -59,7 +59,7 @@ namespace sita::ecs::entity {
 
 	/////// Components
 	template <typename T, typename ... Args>
-	void Entity_Manager::addComponent(u64 entityId, Args&&... args) {
+	void Entity_Manager::addComponent(Entity entity, Args&&... args) {
 		const auto componentId = component::Component<T>::getId();
 
 		if (componentId >= m_componentPools.size()) {
@@ -73,46 +73,37 @@ namespace sita::ecs::entity {
 
 		auto componentPool = std::static_pointer_cast<core::Pool<T>>(m_componentPools[componentId]);
 
-		if (entityId >= componentPool->getSize()) {
-			componentPool->resize(m_numEntities);
+		if (entity >= componentPool->getSize()) {
+			componentPool->resize(m_numEntities * 2);
 		}
 
 		T component(std::forward<Args>(args)...);
 
-		componentPool->set(entityId, component);
+		componentPool->set(entity, component);
 
-		m_entitySignatures[entityId].set(componentId);
+		m_entitySignatures[entity].set(componentId);
 	}
 
 	template <typename T>
-	void Entity_Manager::removeComponent(u64 entityId) {
+	void Entity_Manager::removeComponent(Entity entity) {
 		const auto componentId = component::Component<T>::getId();
 
-		m_entitySignatures[entityId].set(componentId, false);
+		m_entitySignatures[entity].set(componentId, false);
 	}
 
 	template <typename T>
-	bool Entity_Manager::hasComponent(u64 entityId) const {
+	bool Entity_Manager::hasComponent(u64 entity) const {
 		const auto componentId = component::Component<T>::getId();
 
-		return m_entitySignatures[entityId].test(componentId);
+		return m_entitySignatures[entity].test(componentId);
 	}
 
 	template <typename T>
-	T& Entity_Manager::getComponent(u64 entityId) {
+	T& Entity_Manager::getComponent(Entity entity) {
 		const auto componentId = component::Component<T>::getId();
 
-		if (m_entitySignatures[entityId].test(componentId)) {
-			core::Pool<T> componentPool = m_componentPools[componentId];
-			if (componentPool) {
-				return componentPool.get(entityId);
-			}
-
-			Log::error("Entity_Manager::getComponent - Entity contains component which does not exist in pool! ID: {}", componentId);
-			return nullptr;
-		}
-
-		return nullptr;
+		auto componentPool = std::static_pointer_cast<core::Pool<T>>(m_componentPools[componentId]);
+		return componentPool->get(entity);
 	}
 
 }

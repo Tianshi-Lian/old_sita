@@ -4,6 +4,11 @@
 
 using namespace sita::ecs::entity;
 
+Entity::Entity()
+	: id(0)
+	, m_entityManager(nullptr) {
+}
+
 Entity::Entity(u64 id)
 	: id(id)
 	, m_entityManager(nullptr) {
@@ -11,4 +16,8 @@ Entity::Entity(u64 id)
 
 void Entity::bind(Entity_Manager* entityManager) {
 	m_entityManager = entityManager;
+}
+
+void Entity::destroy() const {
+	m_entityManager->destroyEntity(id);
 }

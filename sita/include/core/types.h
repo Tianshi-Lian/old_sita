@@ -15,6 +15,14 @@ typedef uint64_t u64;
 typedef float  f32;
 typedef double f64;
 
+union v2 {
+	struct {
+		float x;
+		float y;
+	};
+	float v[2];
+};
+
 #include <memory>
 #include <thread>
 #include <mutex>

@@ -3,21 +3,45 @@
 using namespace sita::ecs;
 using namespace sita::ecs::system;
 
-void System::addEntity(u64 entityId) {
-	m_entities.push_back(entityId);
+System::System(System_Flags systemFlags)
+	: m_flags(systemFlags) {
 }
 
-void System::removeEntity(u64 entityId) {
+void System::addEntity(entity::Entity entity) {
+	m_entities.push_back(entity);
+
+	postAddEntity(entity);
+}
+
+void System::removeEntity(entity::Entity entity) {
 	m_entities.erase(std::remove_if(m_entities.begin(), m_entities.end(),
-		[&entityId](u64 other) {
-			return entityId == other;
+		[&entity](entity::Entity other) {
+			return entity == other;
 		}), m_entities.end());
 }
 
-const std::vector<u64>& System::getEntities() const {
+void System::update(const float& dt) {
+}
+
+void System::render(graphics::Renderer2D& renderer) {
+}
+
+#ifdef PS_DEBUG
+void System::debugRender(graphics::Renderer2D& renderer) {
+}
+#endif
+
+const std::vector<entity::Entity>& System::getEntities() const {
 	return m_entities;
 }
 
 const component::Base_Component::Signature& System::getSignature() const {
 	return m_signature;
+}
+
+System_Flags System::getFlags() const {
+	return m_flags;
+}
+
+void System::postAddEntity(entity::Entity& entity) {
 }
