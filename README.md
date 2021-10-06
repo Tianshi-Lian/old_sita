@@ -1,5 +1,5 @@
-# Sita Engine
-My game engine.
+# Sita
+<img src="https://user-images.githubusercontent.com/8819701/136181934-d9f76754-0180-4b20-ac69-e0f2dea05c59.png" width="512" height="512">
   
 ## Build:
 #### Global Dependencies:
